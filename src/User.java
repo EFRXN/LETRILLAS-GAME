@@ -2,11 +2,15 @@
 public class User {
 	String alias;
 	int score;
+	long time;
 	
 	//Constructor
 	public User(String a, int s) {
-		a = alias;
-		s = score;
+		alias = a;
+		score = s;
+	}
+	public User(String a) {
+		alias = a;
 	}
 	
 	//Methods
@@ -16,5 +20,8 @@ public class User {
 	
 	public void setScore(int score) {
 		this.score = score;
+	}
+	public void setTime(long t) {
+		this.time = time;
 	}
 }
