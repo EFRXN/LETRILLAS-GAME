@@ -1,0 +1,22 @@
+<empresa nombre="Gypsy Informatic">
+  <juego nombre="Letrillas">
+    <descripcion>Aparecen letras desordenadas y el usuario debe ordenarlas.</descripcion>
+    <objetivo>Ordenar las letras con la menor cantidad de errores posibles.</objetivo>
+    <dificultad nivel="Intermedio"/>
+    <tipo>Juego de palabras</tipo>
+    <plataformas>
+      <plataforma>Android</plataforma>
+      <plataforma>iOS</plataforma>
+      <plataforma>Windows</plataforma>
+      <plataforma>MacOS</plataforma>
+    </plataformas>
+    <precio moneda="€">2.99</precio>
+    <desarrollador>Efren Ojeda</desarrollador>
+  </juego>
+  <miembros>
+      <miembro>Carmelo Mbomio</miembro>
+      <miembro>Iker Morales</miembro>
+      <miembro>Ignacio Herrera</miembro>
+      <miembro>Efren Ojeda</miembro>
+    </miembros>
+</empresa>

@@ -11,10 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
@@ -55,15 +58,21 @@ public class Register extends JPanel{
 			
 			@Override
 			public void focusLost(FocusEvent e) {
-				
+				if (tfAlias.getText().isEmpty()) {
+					tfAlias.setText("Nombre de usuario");
+					tfAlias.setForeground(Color.GRAY);
+				}
 				
 			}
 			
 			@Override
 			public void focusGained(FocusEvent e) {
 				// TODO Auto-generated method stub
-				if (tfAlias.getText().equals("Nombre de usuario"))
+				if (tfAlias.getText().equals("Nombre de usuario")) {
 					tfAlias.setText("");
+					tfAlias.setForeground(Color.BLACK);
+				}
+					
 			}
 		});
     	
@@ -98,14 +107,19 @@ public class Register extends JPanel{
 			
 			@Override
 			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
+				if (tfEmail.getText().isEmpty()) {
+					tfEmail.setText("Email");
+					tfEmail.setForeground(Color.GRAY);
+				}
 			}
 			
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (tfEmail.getText().equals("Email"))
+				if (tfEmail.getText().equals("Email")) {
 					tfEmail.setText("");
+					tfEmail.setForeground(Color.BLACK);
+				}
+					
 			}
 		});
     	
@@ -115,13 +129,18 @@ public class Register extends JPanel{
 			
 			@Override
 			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				
+				if (password.getText().isEmpty()) {
+					password.setText("Contraseña");
+					password.setForeground(Color.GRAY);
+				}
 			}
 			
 			@Override
 			public void focusGained(FocusEvent e) {
-				password.setText("");
+				if (password.getText().equals("Contraseña")) {
+					password.setText("");
+					password.setForeground(Color.BLACK);
+				}
 				
 			}
 		});
@@ -140,11 +159,11 @@ public class Register extends JPanel{
     	//Añadir objetos al panel
     	c.gridheight = 1;
     	c.gridwidth = 1;
-    	c.insets = new Insets(40,20,0,560);
+    	c.insets = new Insets(33,20,0,560);
     	addGB(back,1,0);
-    	c.insets = new Insets(40,150,0,150);
+    	c.insets = new Insets(33,150,0,150);
     	addGB(title, 1, 0);
-    	c.insets = new Insets(50,200,10,200);
+    	c.insets = new Insets(45,200,10,200);
     	addGB(tfAlias, 1, 1);
     	c.insets = new Insets(0,200,10,200);
     	addGB(tfEmail, 1, 2);
@@ -160,8 +179,38 @@ public class Register extends JPanel{
 		add(component, c);
 	}
 	public void Registrarse() {
-		System.out.println("Registrado con exito");
-		Frame.scrollPaneles.setViewportView(Frame.pStart);
+		if (tfAlias.getText().isEmpty() || tfAlias.getText().equals("Nombre de usuario") ||
+				tfEmail.getText().isEmpty() || tfEmail.getText().equals("Email") ||
+				password.getText().isEmpty() || password.getText().equals("Contraseña")) {
+			JOptionPane.showMessageDialog(null, "Completa todos los campos para registrarte", "Registrarse", JOptionPane.WARNING_MESSAGE);
+		}
+		else {
+			if (validarEmail(tfEmail.getText())) {
+				System.out.println("Email valido!");
+				Frame.scrollPaneles.setViewportView(Frame.pStart);
+				JOptionPane.showMessageDialog(null, "Registrado Correctamente!", "Registrarse", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "El email no es valido", "Registrarse", JOptionPane.WARNING_MESSAGE);
+			}				
+		}
+		
+	}
+	private boolean validarEmail(String email) {
+		// Patrón para validar el email
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+ 
+        // El email a validar
+ 
+        Matcher mather = pattern.matcher(email);
+ 
+        if (mather.find() == true) {
+            return true;
+        } else {
+            return false;
+        }
 	}
 	
 }

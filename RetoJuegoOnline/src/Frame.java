@@ -8,10 +8,11 @@ public class Frame extends JFrame{
 	
 	static Start pStart;
 	static JScrollPane scrollPaneles;
+	static User user1 = new User();
 	
 	public Frame() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(650, 510);
+        setSize(650, 610);
         setLocationRelativeTo(null);
         setVisible(true);
         setPanels();
@@ -20,7 +21,7 @@ public class Frame extends JFrame{
 		
 		pStart = new Start();
 		scrollPaneles = new JScrollPane();
-		scrollPaneles.setSize(new Dimension(650, 510));
+		scrollPaneles.setSize(new Dimension(650, 610));
 		scrollPaneles.setViewportView(pStart);
 		add(scrollPaneles);
 	}

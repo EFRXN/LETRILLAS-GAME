@@ -37,6 +37,7 @@ public class Game extends JPanel{
      private int sec = 0;
      private boolean stop = false;
      private JLabel lblTime;
+     private JLabel lblCont;
      private JLabel text;
      private JButton back;
      private JButton check;
@@ -50,11 +51,11 @@ public class Game extends JPanel{
      private int ronda;
      private String time;
      
-     User user1 = new Start().user1;
      ArrayList<Integer> numerosGenerados;	 
 	 GridBagConstraints c = new GridBagConstraints();
 	 
 	 public Game() {
+		 userData("GAME");
 		 ronda = 0;
 		numerosGenerados = new ArrayList<>();
 		setLayout(new GridBagLayout());
@@ -69,10 +70,8 @@ public class Game extends JPanel{
     	title.setForeground(Color.WHITE);
     	
     	back = new JButton("←");
-//    	back.setIcon(new ImageIcon("src\\caracruz\\monedaok.gif"));
     	back.setHorizontalAlignment(SwingConstants.LEFT);
     	back.setFont(new Font("Arial", Font.BOLD, 28));
-//    	back.setForeground(Color.WHITE);
     	back.setBackground(Color.GREEN);
     	
     	back.addActionListener(new ActionListener() {
@@ -87,8 +86,11 @@ public class Game extends JPanel{
     	lblTime.setFont(new Font("Arial", Font.BOLD, 18));
     	lblTime.setForeground(Color.WHITE);
     	lblTime.setHorizontalAlignment(SwingConstants.RIGHT);
-//    	lblTime.setOpaque(true);
-//    	lblTime.setBackground(Color.RED);
+    	
+    	lblCont = new JLabel(ronda + "/10");
+    	lblCont.setFont(new Font("Arial", Font.BOLD, 18));
+    	lblCont.setForeground(Color.WHITE);
+    	lblCont.setHorizontalAlignment(SwingConstants.LEFT);
     	
     	text = new JLabel("Adivina la palabra desordenada.");
     	text.setForeground(Color.WHITE);
@@ -158,8 +160,10 @@ public class Game extends JPanel{
     	addGB(title, 0,0);
     	c.insets = new Insets(40,20,0,560);
     	addGB(back,0,0);
-    	c.insets = new Insets(40,0,0,30);
-    	addGB(lblTime, 0, 0);
+    	c.insets = new Insets(0,30,0,35);
+    	addGB(lblTime, 0, 1);
+    	c.insets = new Insets(0,30,0,30);
+    	addGB(lblCont, 0, 1);
     	c.insets = new Insets(20,200,10,200);
     	addGB(text, 0, 1);
     	c.insets = new Insets(10,0,20,0);
@@ -205,7 +209,7 @@ public class Game extends JPanel{
 	 private void randomWord() {
 		 ArrayList<String> palabras = new ArrayList<String>();
 		 try {
-	            File archivo = new File("src//diccionarioefren2.txt//");
+	            File archivo = new File("src//diccionarioesp.txt//");
 	            Scanner scanner = new Scanner(archivo);
 	            scanner.useDelimiter("\n");
 	            while (scanner.hasNext()) {
@@ -232,6 +236,7 @@ public class Game extends JPanel{
 	        
 	        // Mostrar la palabra seleccionada
 	        word = palabrasFiltradas.get(indiceAleatorio);
+	        System.out.println("--HACKS--");
 	        System.out.println("Hacks: " + word);
 	        letrilla.setText(desordenar(word));
 	        
@@ -304,7 +309,8 @@ public class Game extends JPanel{
 				totalPoints = totalPoints + wordPoints;
 				points.setText("PUNTOS: " + totalPoints);
 				ronda++;
-				if (ronda == 7) {
+				lblCont.setText(ronda + "/10");
+				if (ronda == 10) {
 					System.out.println("-----FIN DE RONDAS-----");
 					stop = true;
 					 sec--;
@@ -312,25 +318,48 @@ public class Game extends JPanel{
 			                min--;
 			                sec = 59;
 			            }
-						 user1.setTime(time);
-						 System.out.println("Time: " + user1.time);
-						 user1.setScore(totalPoints);
-						 System.out.println("Puntos: " + user1.score);
+						 Frame.user1.setTime(time);
+						 System.out.println("Time: " + Frame.user1.time);
+						 Frame.user1.setScore(totalPoints);
+						 System.out.println("Puntos: " + Frame.user1.score);
 					entrada.setEnabled(false);
-					check.setEnabled(false);	
-					
+					check.setEnabled(false);						
+					estadisticasFin();
 				}
 				
 				}
 			
 			}
 			else {
-				System.out.println("MAL");
+				System.out.println("-----MAL-----");
 				letrilla.setBackground(Color.RED);
 				String desvelar = desvelarLetra(word, letrilla.getText());
 				letrilla.setText(desvelar);
 				entrada.setText("");
 				multiplicador--;
 			}
+		}
+	 private void estadisticasFin() {
+		 Object[] opciones = {"Volver a jugar", "Volver al Inicio"};
+		 String estadisticas = "Puntuación: " + Frame.user1.score + " | Tiempo: " + Frame.user1.time;
+		 String titulo = "Estadísticas de " + Frame.user1.alias;
+		    int seleccion = JOptionPane.showOptionDialog(null, estadisticas, titulo, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+		    
+		    if (seleccion == JOptionPane.YES_OPTION) {
+		      System.out.println("Volver a jugar");
+		      Game pGame = new Game();
+				Frame.scrollPaneles.setViewportView(pGame);
+		    } else if (seleccion == JOptionPane.NO_OPTION) {
+		      System.out.println("Volver al inicio");
+		      Frame.scrollPaneles.setViewportView(Frame.pStart);
+		    } else {
+		      System.out.println("El usuario cerró el diálogo sin seleccionar ninguna opción.");
+		    }
+	}
+	 private void userData(String title) {
+			System.out.println("--" + title + "--");
+			System.out.println("User name: " + Frame.user1.alias);
+			System.out.println("Score: " + Frame.user1.score);
+			System.out.println("Time: " + Frame.user1.time);
 		}
 }
