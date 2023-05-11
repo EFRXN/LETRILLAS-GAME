@@ -11,6 +11,7 @@ public class Frame extends JFrame{
 	static User user1 = new User();
 	
 	public Frame() {
+		setTitle("LETRILLAS ©");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(650, 610);
         setLocationRelativeTo(null);

@@ -209,7 +209,7 @@ public class Game extends JPanel{
 	 private void randomWord() {
 		 ArrayList<String> palabras = new ArrayList<String>();
 		 try {
-	            File archivo = new File("src//diccionarioesp.txt//");
+	            File archivo = new File("src//diccionarioesp2.txt//");
 	            Scanner scanner = new Scanner(archivo);
 	            scanner.useDelimiter("\n");
 	            while (scanner.hasNext()) {
@@ -323,7 +323,8 @@ public class Game extends JPanel{
 						 Frame.user1.setScore(totalPoints);
 						 System.out.println("Puntos: " + Frame.user1.score);
 					entrada.setEnabled(false);
-					check.setEnabled(false);						
+					check.setEnabled(false);	
+					Frame.user1.insertStatsDB();
 					estadisticasFin();
 				}
 				

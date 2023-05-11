@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -179,23 +181,56 @@ public class Register extends JPanel{
 		add(component, c);
 	}
 	public void Registrarse() {
-		if (tfAlias.getText().isEmpty() || tfAlias.getText().equals("Nombre de usuario") ||
-				tfEmail.getText().isEmpty() || tfEmail.getText().equals("Email") ||
-				password.getText().isEmpty() || password.getText().equals("Contraseña")) {
+		if ((verificarCampos(tfAlias) || verificarCampos(tfEmail) || verificarContrasena(password))) {
 			JOptionPane.showMessageDialog(null, "Completa todos los campos para registrarte", "Registrarse", JOptionPane.WARNING_MESSAGE);
 		}
 		else {
 			if (validarEmail(tfEmail.getText())) {
-				System.out.println("Email valido!");
+				String passwordEncripted = encriptarContrasena(password);
+				Frame.user1.setAlias(tfAlias.getText());
+				Frame.user1.setEmail(tfEmail.getText());
+				Frame.user1.setPassword(passwordEncripted);
+				Frame.user1.insertRegistroDB();
 				Frame.scrollPaneles.setViewportView(Frame.pStart);
-				JOptionPane.showMessageDialog(null, "Registrado Correctamente!", "Registrarse", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "El email no es valido", "Registrarse", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "El email no es valido.", "Registrarse", JOptionPane.WARNING_MESSAGE);
 			}				
 		}
 		
 	}
+	
+	private String encriptarContrasena(JPasswordField passwordField) {
+		char[] password = passwordField.getPassword();
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(new String(password).getBytes());
+            byte[] bytes = md.digest();
+
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(String.format("%02x", b));
+            }
+
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+
+
+    private static boolean verificarCampos(JTextField textField) {
+        String text = textField.getText();
+        return text == null || text.trim().isEmpty() || text.equals("Nombre de usuario") || text.equals("Email");
+    }
+    private boolean verificarContrasena(JPasswordField passwordField) {
+    	char[] password = passwordField.getPassword();
+        return password == null || password.length == 0 || (new String (password)).equals("Contraseña");
+	}
+    
 	private boolean validarEmail(String email) {
 		// Patrón para validar el email
         Pattern pattern = Pattern

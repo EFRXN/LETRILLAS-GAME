@@ -83,8 +83,6 @@ jardin
 joven
 chica
 chico
-niño
-niña
 simbolo
 antifaz
 interfaz
@@ -114,7 +112,6 @@ cabello
 culo
 tetas
 vagina
-uñas
 pulsera
 besos
 carretera
@@ -165,7 +162,6 @@ cristiano
 espacio
 interestelar
 palmera
-otoño
 verano
 esternocleidomastoideo
 hueso
@@ -251,12 +247,10 @@ viernes
 sabado
 domingo
 noche
-cumpleaños
 navidad
 despedida
 humildad
 romantico
-cariñoso
 enamorado
 estupido
 esculpir
@@ -304,7 +298,6 @@ industria
 anderson
 columna
 linea
-mario
 discutir
 donostia
 serenata
@@ -316,9 +309,7 @@ coger
 agarrar
 cagar
 axilas
-infrahumano
 humo
-superheroe
 humanista
 drogadicto
 gerente
@@ -333,7 +324,7 @@ ajo
 voz
 foca
 cama
-año
+ano
 gato
 nuez
 lobo

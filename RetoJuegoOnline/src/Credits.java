@@ -119,7 +119,6 @@ public class Credits extends Panel {
 	            Node empresaNode = doc.getElementsByTagName("empresa").item(0);
 	            String nombreEmpresa = ((Element) empresaNode).getAttribute("nombre");
 	            lblEmpresa.setText("EMPRESA: " + nombreEmpresa);
-	            System.out.println(nombreEmpresa);
 	            
 	            //Elemento "descripcion de "juego"
 	            Node juegoNode = doc.getElementsByTagName("juego").item(0);

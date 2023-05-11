@@ -7,12 +7,15 @@ import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+
+import org.bson.Document;
 
 public class Ranking extends Panel {
 
@@ -45,47 +48,21 @@ public class Ranking extends Panel {
 					Frame.scrollPaneles.setViewportView(Frame.pStart);
 				}
 			});
-			
-			String[] columnas = {"Puesto", "Nombre", "Puntuación", "Tiempo", "Fecha"};
-			Object[][] datos = {
-		      {1, "Juan", "340", "00:59", "06/05/2023"},
-		      {2, "María", "450", "01:20", "06/05/2023"},
-		      {3, "Pedro", "210", "01:00", "06/05/2023"},
-		      {4, "Laura", "50", "03:30", "06/05/2023"},
-		      {5, "Juan", "340", "00:59", "06/05/2023"},
-		      {6, "María", "450", "01:20", "06/05/2023"},
-		      {7, "Pedro", "210", "01:00", "06/05/2023"},
-		      {8, "Laura", "50", "03:30", "06/05/2023"},
-		      {9, "Juan", "340", "00:59", "06/05/2023"},
-		      {10, "María", "450", "01:20", "06/05/2023"},
-		      {11, "Pedro", "210", "01:00", "06/05/2023"},
-		      {12, "Laura", "50", "03:30", "06/05/2023"},
-		      {13, "Juan", "340", "00:59", "06/05/2023"},
-		      {14, "María", "450", "01:20", "06/05/2023"},
-		      {15, "Pedro", "210", "01:00", "06/05/2023"},
-		      {16, "Laura", "50", "03:30", "06/05/2023"},
-		      {17, "Juan", "340", "00:59", "06/05/2023"},
-		      {18, "María", "450", "01:20", "06/05/2023"},
-		      {19, "Pedro", "210", "01:00", "06/05/2023"},
-		      {20, "Laura", "50", "03:30", "06/05/2023"},
-		      {21, "Juan", "340", "00:59", "06/05/2023"},
-		      {22, "Pedro", "210", "01:00", "06/05/2023"},
-		      {23, "Laura", "50", "03:30", "06/05/2023"},
-		      {24, "Juan", "340", "00:59", "06/05/2023"},
-		      {25, "María", "450", "01:20", "06/05/2023"},
-		      {26, "Pedro", "210", "01:00", "06/05/2023"},
-		      {27, "Laura", "50", "03:30", "06/05/2023"},
-		      {28, "Juan", "340", "00:59", "06/05/2023"},
-		      {29, "Pedro", "210", "01:00", "06/05/2023"},
-		      {30, "Laura", "50", "03:30", "06/05/2023"},
-		      {31, "Juan", "340", "00:59", "06/05/2023"},
-		      {32, "María", "450", "01:20", "06/05/2023"},
-		      {33, "Pedro", "210", "01:00", "06/05/2023"},
-		      {34, "Laura", "50", "03:30", "06/05/2023"},
-		      {35, "Juan", "340", "00:59", "06/05/2023"}
-		    };
+	    	List<Document> documentos = AccesoMongo.obtenerEstadisticas();
+	    	
+	    	String[] columnas = {"Posición", "Nombre", "Puntuación", "Tiempo", "Fecha"};
+	        Object[][] datos = new Object[documentos.size()][columnas.length];
+	        for (int i = 0; i < documentos.size(); i++) {
+	            Document documento = documentos.get(i);
+	            datos[i][0] = i + 1;
+	            datos[i][1] = documento.getString("nombre");
+	            datos[i][2] = documento.getInteger("puntuacion");
+	            datos[i][3] = documento.getString("tiempo");
+	            datos[i][4] = documento.getDate("fecha");
+	        }
 			    
-	    	tabla = new JTable(datos, columnas);
+	        tabla = new JTable(datos, columnas);
+	        JScrollPane scrollPane = new JScrollPane(tabla);
 	    	tabla.setForeground(Color.WHITE);
 	    	tabla.setBackground(Color.BLACK);
 	    	tabla.setGridColor(Color.GREEN);
@@ -99,7 +76,7 @@ public class Ranking extends Panel {
 	    	c.insets = new Insets(54,20,0,560);
 	    	addGB(back,0,0);
 	    	c.insets = new Insets(40,20,100,30);
-	    	addGB(new JScrollPane(tabla), 0,1);
+	    	addGB(scrollPane, 0,1);
 	    	
 		}void addGB(Component component, int x, int y) {
 			c.gridx = x; //posicion columna

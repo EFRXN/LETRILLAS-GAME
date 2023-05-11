@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,7 +110,7 @@ public class Start extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				String texto = JOptionPane.showInputDialog(null, "Escribe tu Email y te enviaremos un correo para recuperar tu contraseña.", "Recuperar contraseña", JOptionPane.NO_OPTION);
 			    
-			    if (texto == null || validarEmail(texto)==false ) {
+			    if (texto == null || validarEmail(texto)==false || !AccesoMongo.verificarEmail(texto) ) {
 			      System.out.println("Inserte un Email valido");
 			      JOptionPane.showMessageDialog(null, "El Email no es valido o no existe en nuestra base de datos.", "Recuperar contraseña", JOptionPane.ERROR_MESSAGE);
 			    } else {
@@ -136,11 +138,15 @@ public class Start extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(validarLogin() == false) {
-					JOptionPane.showMessageDialog(null, "Esribe un nombre de usuario y contraseña validos.", "Usuario o contraseña incorrectos", JOptionPane.WARNING_MESSAGE);
+				if(verificarCampos(tfAlias) || verificarContrasena(password)) {
+					JOptionPane.showMessageDialog(null, "Completa los campos usario y contraseña.", "Usuario o contraseña incorrectos", JOptionPane.WARNING_MESSAGE);
 				}
-				else
-				play();
+				else 
+					if(AccesoMongo.verificarLogin(tfAlias.getText(), encriptarContrasena(password))) {
+						play();
+					}else
+						JOptionPane.showMessageDialog(null, "Nombre o contraseña incorrectos.", "Usuario o contraseña incorrectos", JOptionPane.WARNING_MESSAGE);
+					
 			}
 		});
 		
@@ -215,13 +221,14 @@ public class Start extends JPanel{
             return false;
         }
 	}
-	private boolean validarLogin() {
-		if(tfAlias.getText().isEmpty() || tfAlias.getText().equals("Nombre de usuario") ||
-				password.getText().isEmpty() || password.getText().equals("Contraseña")) {
-			return false;
-		}
-		else
-			return true;
+	
+	private boolean verificarCampos(JTextField textField) {
+        String text = textField.getText();
+        return text == null || text.trim().isEmpty() || text.equals("Nombre de usuario");
+    }
+    private boolean verificarContrasena(JPasswordField passwordField) {
+    	char[] password = passwordField.getPassword();
+        return password == null || password.length == 0 || (new String (password)).equals("Contraseña");
 	}
 	
 	private void userData(String title) {
@@ -230,5 +237,26 @@ public class Start extends JPanel{
 		System.out.println("Score: " + Frame.user1.score);
 		System.out.println("Time: " + Frame.user1.time);
 	}
+	
+	private String encriptarContrasena(JPasswordField passwordField) {
+	char[] password = passwordField.getPassword();
+
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(new String(password).getBytes());
+        byte[] bytes = md.digest();
+
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+
+        return sb.toString();
+
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+        return null;
+    }
+}
 	
 }
