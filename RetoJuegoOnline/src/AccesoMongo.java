@@ -26,7 +26,7 @@ public class AccesoMongo {
 	public static MongoClient crearConexion() {
 		System.out.println("PRUEBA CONEXIÓN");
 		MongoClient mongo = null;
-		String host = "mongodb://localhost:27017";
+		String host = "mongodb://192.168.1.184:27017";
 		mongo = MongoClients.create(host);
 		return mongo;
 	}
